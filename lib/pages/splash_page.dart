@@ -1,5 +1,6 @@
 import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -22,9 +23,9 @@ class _SplashPageState extends State<SplashPage> {
     if (!mounted) return;
 
     if (session != null) {
-      Navigator.of(context).pushReplacementNamed('/account');
+      context.go('/account');
     } else {
-      Navigator.of(context).pushReplacementNamed('/login');
+      context.go('/login');
     }
   }
 

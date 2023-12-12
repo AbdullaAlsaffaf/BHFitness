@@ -1,5 +1,6 @@
 import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -12,14 +13,14 @@ class AccountPage extends StatelessWidget {
           children: [
             ElevatedButton(
                 onPressed: () async {
-                  await Navigator.of(context).pushReplacementNamed('/');
+                  context.go('/');
                 },
                 child: const Text('splashscreen')),
             ElevatedButton(
                 onPressed: () async {
                   await supabase.auth.signOut();
                   if (context.mounted) {
-                    await Navigator.of(context).pushReplacementNamed('/login');
+                    context.go('/login');
                   }
                 },
                 child: const Text('Sign Out'))

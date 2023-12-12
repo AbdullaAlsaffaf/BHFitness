@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:bhfit/main.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUp extends StatefulWidget {
@@ -26,7 +27,7 @@ class _SignUpState extends State<SignUp> {
     _authSupbscription = supabase.auth.onAuthStateChange.listen((event) {
       final session = event.session;
       if (session != null) {
-        Navigator.of(context).pushReplacementNamed('/account');
+        context.go('/account');
       }
     });
   }
@@ -224,7 +225,7 @@ class _SignUpState extends State<SignUp> {
       await supabase.auth.signUp(
         email: email,
         password: password,
-        emailRedirectTo: 'io.supabase.bhfitness://callback/',
+        emailRedirectTo: 'io.supabase.bhfitness://callback',
       );
 
       if (mounted) {
