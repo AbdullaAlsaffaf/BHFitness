@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bhfit/main.dart';
 import 'package:bhfit/pages/widgets/password_reset.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -20,10 +21,11 @@ class _PassResetPageState extends State<PassResetPage> {
   void initState() {
     super.initState();
     _authSupbscription = supabase.auth.onAuthStateChange.listen((event) {
-      final session = event.session;
-
-      if (session == null) {
+      final User? user = supabase.auth.currentUser;
+      if (user == null) {
         context.go('/login');
+      } else {
+        debugPrint(user.toString());
       }
     });
   }

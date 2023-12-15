@@ -191,9 +191,6 @@ class _PasswordResetState extends State<PasswordReset> {
             const SnackBar(content: Text('Password has been reset')));
       }
       await supabase.auth.signOut();
-      if (mounted) {
-        context.go('/login');
-      }
     } on AuthException catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -202,37 +199,6 @@ class _PasswordResetState extends State<PasswordReset> {
         ));
       }
     }
-
-    // ScaffoldMessenger.of(context)
-    //     .showSnackBar(const SnackBar(content: Text('SignUp button pressed')));
-    // try {
-    //   final email = _emailController.text.trim();
-    //   final password = _passwordController.text.trim();
-    //   await supabase.auth.signUp(
-    //     email: email,
-    //     password: password,
-    //     emailRedirectTo: 'io.supabase.bhfitness://callback',
-    //   );
-
-    // if (mounted) {
-    //   ScaffoldMessenger.of(context)
-    //       .showSnackBar(const SnackBar(content: Text('Check your inbox')));
-    // }
-    // } on AuthException catch (error) {
-    // if (mounted) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text(error.message),
-    //     backgroundColor: Theme.of(context).colorScheme.error,
-    //   ));
-    // }
-    // } catch (error) {
-    //   if (mounted) {
-    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //       content: const Text('Error occured'),
-    //       backgroundColor: Theme.of(context).colorScheme.error,
-    //     ));
-    //   }
-    // }
   }
 
   void _toggleSignUp() {
