@@ -14,6 +14,8 @@ class _SignUpState extends State<SignUp> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  bool _isloading = false;
+
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
 
@@ -94,7 +96,7 @@ class _SignUpState extends State<SignUp> {
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
-                              onTap: _toggleSignUp,
+                              onTap: _togglePasswordObscurity,
                               child: Icon(
                                 _obscureTextPassword
                                     ? Icons.home
@@ -132,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
-                              onTap: _toggleSignUpConfirm,
+                              onTap: _toggleConfirmPasswordObscurity,
                               child: Icon(
                                 _obscureTextConfirmPassword
                                     ? Icons.home
@@ -143,7 +145,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ),
                           onSubmitted: (_) {
-                            _toggleSignUpButton();
+                            _signUp();
                           },
                           textInputAction: TextInputAction.go,
                         ),
@@ -190,7 +192,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                   ),
-                  onPressed: () => {_toggleSignUpButton()},
+                  onPressed: () => {_signUp()},
                 ),
               )
             ],
@@ -200,10 +202,13 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-  void _toggleSignUpButton() async {
-    // ScaffoldMessenger.of(context)
-    //     .showSnackBar(const SnackBar(content: Text('SignUp button pressed')));
+  void _signUp() async {
+    if (_isloading) {
+      return;
+    }
+
     try {
+      _isloading = true;
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
       final passwordConfirm = _confirmPasswordController.text.trim();
@@ -239,16 +244,18 @@ class _SignUpState extends State<SignUp> {
           backgroundColor: Theme.of(context).colorScheme.error,
         ));
       }
+    } finally {
+      _isloading = false;
     }
   }
 
-  void _toggleSignUp() {
+  void _togglePasswordObscurity() {
     setState(() {
       _obscureTextPassword = !_obscureTextPassword;
     });
   }
 
-  void _toggleSignUpConfirm() {
+  void _toggleConfirmPasswordObscurity() {
     setState(() {
       _obscureTextConfirmPassword = !_obscureTextConfirmPassword;
     });

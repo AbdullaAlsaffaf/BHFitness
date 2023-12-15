@@ -1,6 +1,5 @@
 import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PasswordReset extends StatefulWidget {
@@ -13,6 +12,8 @@ class PasswordReset extends StatefulWidget {
 class _PasswordResetState extends State<PasswordReset> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+
+  bool _isloading = false;
 
   bool _obscureTextPassword = true;
   bool _obscureTextConfirmPassword = true;
@@ -65,7 +66,7 @@ class _PasswordResetState extends State<PasswordReset> {
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
-                              onTap: _toggleSignUp,
+                              onTap: _togglePasswordObscurity,
                               child: Icon(
                                 _obscureTextPassword
                                     ? Icons.home
@@ -103,7 +104,7 @@ class _PasswordResetState extends State<PasswordReset> {
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
-                              onTap: _toggleSignUpConfirm,
+                              onTap: _toggleConfirmPasswordObscurity,
                               child: Icon(
                                 _obscureTextConfirmPassword
                                     ? Icons.home
@@ -182,7 +183,12 @@ class _PasswordResetState extends State<PasswordReset> {
       return;
     }
 
+    if (_isloading) {
+      return;
+    }
+
     try {
+      _isloading = true;
       await supabase.auth.updateUser(UserAttributes(
         password: password,
       ));
@@ -198,16 +204,18 @@ class _PasswordResetState extends State<PasswordReset> {
           backgroundColor: Theme.of(context).colorScheme.error,
         ));
       }
+    } finally {
+      _isloading = false;
     }
   }
 
-  void _toggleSignUp() {
+  void _togglePasswordObscurity() {
     setState(() {
       _obscureTextPassword = !_obscureTextPassword;
     });
   }
 
-  void _toggleSignUpConfirm() {
+  void _toggleConfirmPasswordObscurity() {
     setState(() {
       _obscureTextConfirmPassword = !_obscureTextConfirmPassword;
     });

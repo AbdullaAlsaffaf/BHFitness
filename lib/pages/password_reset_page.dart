@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bhfit/main.dart';
 import 'package:bhfit/pages/widgets/password_reset.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,8 +23,6 @@ class _PassResetPageState extends State<PassResetPage> {
       final User? user = supabase.auth.currentUser;
       if (user == null) {
         context.go('/login');
-      } else {
-        debugPrint(user.toString());
       }
     });
   }
@@ -81,15 +78,13 @@ class _PassResetPageState extends State<PassResetPage> {
                       Border.all(color: const Color(0x552B2B2B), width: 5.0),
                   borderRadius: const BorderRadius.all(Radius.circular(25.0)),
                 ),
-                child: const Expanded(
-                  child: Center(
-                    child: Text(
-                      'New Password',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 26.0,
-                        fontWeight: FontWeight.w500,
-                      ),
+                child: const Center(
+                  child: Text(
+                    'New Password',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),

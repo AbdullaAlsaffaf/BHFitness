@@ -13,6 +13,8 @@ class _SignInState extends State<SignIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  bool _isloading = false;
+
   bool _obscureTextPassword = true;
 
   @override
@@ -96,7 +98,7 @@ class _SignInState extends State<SignIn> {
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
-                              onTap: _toggleLogin,
+                              onTap: _togglePasswordObscurity,
                               child: Icon(
                                 _obscureTextPassword
                                     ? Icons.home
@@ -107,7 +109,7 @@ class _SignInState extends State<SignIn> {
                             ),
                           ),
                           onSubmitted: (_) {
-                            _toggleSignInButton();
+                            _signIn();
                           },
                           textInputAction: TextInputAction.go,
                         ),
@@ -154,14 +156,14 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                     ),
-                    onPressed: () => {_toggleSignInButton()}),
+                    onPressed: () => {_signIn()}),
               )
             ],
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: TextButton(
-              onPressed: () => {_forgotPasswordButton()},
+              onPressed: () => {_forgotPassword()},
               child: const Text(
                 'Forgot Password?',
                 style: TextStyle(
@@ -176,8 +178,12 @@ class _SignInState extends State<SignIn> {
     );
   }
 
-  void _forgotPasswordButton() async {
+  void _forgotPassword() async {
+    if (_isloading) {
+      return;
+    }
     try {
+      _isloading = true;
       final email = _emailController.text.trim();
       await supabase.auth.resetPasswordForEmail(
         email,
@@ -202,11 +208,19 @@ class _SignInState extends State<SignIn> {
           backgroundColor: Theme.of(context).colorScheme.error,
         ));
       }
+    } finally {
+      _isloading = false;
     }
   }
 
-  void _toggleSignInButton() async {
+  void _signIn() async {
+    if (_isloading) {
+      return;
+    }
+
     try {
+      _isloading = true;
+
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
       await supabase.auth.signInWithPassword(
@@ -232,10 +246,12 @@ class _SignInState extends State<SignIn> {
           backgroundColor: Theme.of(context).colorScheme.error,
         ));
       }
+    } finally {
+      _isloading = false;
     }
   }
 
-  void _toggleLogin() {
+  void _togglePasswordObscurity() {
     setState(() {
       _obscureTextPassword = !_obscureTextPassword;
     });
