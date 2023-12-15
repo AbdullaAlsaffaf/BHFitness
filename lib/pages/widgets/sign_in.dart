@@ -1,8 +1,5 @@
-import 'dart:async';
-
 import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignIn extends StatefulWidget {
@@ -15,30 +12,18 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  late final StreamSubscription<AuthState> _authSupbscription;
 
   bool _obscureTextPassword = true;
 
   @override
   void initState() {
     super.initState();
-    _authSupbscription = supabase.auth.onAuthStateChange.listen((event) {
-      final session = event.session;
-
-      if (session != null) {
-        context.go('/account');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(event.event.toString()),
-        ));
-      }
-    });
   }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _authSupbscription.cancel();
     super.dispose();
   }
 

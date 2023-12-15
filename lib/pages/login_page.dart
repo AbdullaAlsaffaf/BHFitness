@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
 import 'package:bhfit/pages/widgets/sign_in.dart';
 import 'package:bhfit/pages/widgets/sign_up.dart';
 import 'package:bhfit/utils/bubble_indicator_painter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,6 +16,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late final StreamSubscription<AuthState> _authSupbscription;
+
   PageController? _pageController;
 
   Color left = Colors.black;
@@ -19,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     _pageController?.dispose();
+    _authSupbscription.cancel();
     super.dispose();
   }
 
@@ -26,81 +34,91 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    _authSupbscription = supabase.auth.onAuthStateChange.listen((event) {
+      final session = event.session;
+
+      if (session != null) {
+        context.go('/account');
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton:
+            FloatingActionButton(onPressed: () => {context.go('/passreset')}),
         body: SingleChildScrollView(
-      physics: const ClampingScrollPhysics(),
-      child: GestureDetector(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-                colors: <Color>[
-                  Color.fromRGBO(255, 255, 255, 1),
-                  Color.fromRGBO(0, 0, 0, 1)
-                  // CustomTheme.loginGradientStart,
-                  // CustomTheme.loginGradientEnd
+          physics: const ClampingScrollPhysics(),
+          child: GestureDetector(
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    colors: <Color>[
+                      Color.fromRGBO(255, 255, 255, 1),
+                      Color.fromRGBO(0, 0, 0, 1)
+                      // CustomTheme.loginGradientStart,
+                      // CustomTheme.loginGradientEnd
+                    ],
+                    begin: FractionalOffset(0.0, 0.0),
+                    end: FractionalOffset(1.0, 1.0),
+                    stops: <double>[0.0, 1.0],
+                    tileMode: TileMode.clamp),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 35.0),
+                    child: Image(
+                      height:
+                          MediaQuery.of(context).size.height > 800 ? 300 : 250,
+                      fit: BoxFit.fill,
+                      image: const AssetImage(
+                          'assets/images/BHFitness-transparent.png'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: _buildMenuBar(context),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: PageView(
+                      controller: _pageController,
+                      physics: const ClampingScrollPhysics(),
+                      onPageChanged: (int i) {
+                        if (i == 0) {
+                          setState(() {
+                            right = Colors.white;
+                            left = Colors.black;
+                          });
+                        } else if (i == 1) {
+                          setState(() {
+                            right = Colors.black;
+                            left = Colors.white;
+                          });
+                        }
+                      },
+                      children: <Widget>[
+                        ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: const SignIn(),
+                        ),
+                        ConstrainedBox(
+                          constraints: const BoxConstraints.expand(),
+                          child: const SignUp(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
-                begin: FractionalOffset(0.0, 0.0),
-                end: FractionalOffset(1.0, 1.0),
-                stops: <double>[0.0, 1.0],
-                tileMode: TileMode.clamp),
+              ),
+            ),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 35.0),
-                child: Image(
-                  height: MediaQuery.of(context).size.height > 800 ? 300 : 250,
-                  fit: BoxFit.fill,
-                  image: const AssetImage(
-                      'assets/images/BHFitness-transparent.png'),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: _buildMenuBar(context),
-              ),
-              Expanded(
-                flex: 2,
-                child: PageView(
-                  controller: _pageController,
-                  physics: const ClampingScrollPhysics(),
-                  onPageChanged: (int i) {
-                    if (i == 0) {
-                      setState(() {
-                        right = Colors.white;
-                        left = Colors.black;
-                      });
-                    } else if (i == 1) {
-                      setState(() {
-                        right = Colors.black;
-                        left = Colors.white;
-                      });
-                    }
-                  },
-                  children: <Widget>[
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignIn(),
-                    ),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints.expand(),
-                      child: const SignUp(),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Widget _buildMenuBar(BuildContext context) {

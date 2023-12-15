@@ -1,16 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:bhfit/main.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class PasswordReset extends StatefulWidget {
+  const PasswordReset({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<PasswordReset> createState() => _PasswordResetState();
 }
 
-class _SignUpState extends State<SignUp> {
-  final _emailController = TextEditingController();
+class _PasswordResetState extends State<PasswordReset> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -19,7 +19,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void dispose() {
-    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
@@ -42,37 +41,9 @@ class _SignUpState extends State<SignUp> {
                 ),
                 child: SizedBox(
                   width: 300.0,
-                  height: 275.0,
+                  height: 190.0,
                   child: Column(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
-                        child: TextField(
-                          controller: _emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
-                          decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            // icon: Icon(
-                            //   FontAwesomeIcons.envelope,
-                            //   color: Colors.black,
-                            //   size: 22.0,
-                            // ),
-                            hintText: 'Email Address',
-                            hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 250.0,
-                        height: 1.0,
-                        color: Colors.grey[400],
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
@@ -90,7 +61,7 @@ class _SignUpState extends State<SignUp> {
                             //   size: 22.0,
                             //   color: Colors.black,
                             // ),
-                            hintText: 'Password',
+                            hintText: 'New Password',
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
@@ -128,7 +99,7 @@ class _SignUpState extends State<SignUp> {
                             //   size: 22.0,
                             //   color: Colors.black,
                             // ),
-                            hintText: 'Confirm Password',
+                            hintText: 'Confirm New Password',
                             hintStyle: const TextStyle(
                                 fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
                             suffixIcon: GestureDetector(
@@ -153,7 +124,7 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
               Container(
-                margin: const EdgeInsets.only(top: 255.0),
+                margin: const EdgeInsets.only(top: 170.0),
                 decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
@@ -177,13 +148,13 @@ class _SignUpState extends State<SignUp> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                  //highlightColor: Colors.transparent,
+                  // highlightColor: Colors.transparent,
                   // splashColor: CustomTheme.loginGradientEnd,
                   child: const Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),
                     child: Text(
-                      'REGISTER',
+                      'RESET',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25.0,
@@ -201,29 +172,27 @@ class _SignUpState extends State<SignUp> {
   }
 
   void _toggleSignUpButton() async {
-    // ScaffoldMessenger.of(context)
-    //     .showSnackBar(const SnackBar(content: Text('SignUp button pressed')));
+    final password = _passwordController.text.trim();
+    final passwordConfirm = _confirmPasswordController.text.trim();
+
+    if (password != passwordConfirm) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Passwords don\'t match'),
+          backgroundColor: Theme.of(context).colorScheme.error));
+      return;
+    }
+
     try {
-      final email = _emailController.text.trim();
-      final password = _passwordController.text.trim();
-      final passwordConfirm = _confirmPasswordController.text.trim();
-
-      if (password != passwordConfirm) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text('Passwords don\'t match'),
-            backgroundColor: Theme.of(context).colorScheme.error));
-        return;
-      }
-
-      await supabase.auth.signUp(
-        email: email,
+      await supabase.auth.updateUser(UserAttributes(
         password: password,
-        emailRedirectTo: 'io.supabase.bhfitness://callback',
-      );
-
+      ));
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('Check your inbox')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Password has been reset')));
+      }
+      await supabase.auth.signOut();
+      if (mounted) {
+        context.go('/login');
       }
     } on AuthException catch (error) {
       if (mounted) {
@@ -232,14 +201,38 @@ class _SignUpState extends State<SignUp> {
           backgroundColor: Theme.of(context).colorScheme.error,
         ));
       }
-    } catch (error) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: const Text('Error occured'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-        ));
-      }
     }
+
+    // ScaffoldMessenger.of(context)
+    //     .showSnackBar(const SnackBar(content: Text('SignUp button pressed')));
+    // try {
+    //   final email = _emailController.text.trim();
+    //   final password = _passwordController.text.trim();
+    //   await supabase.auth.signUp(
+    //     email: email,
+    //     password: password,
+    //     emailRedirectTo: 'io.supabase.bhfitness://callback',
+    //   );
+
+    // if (mounted) {
+    //   ScaffoldMessenger.of(context)
+    //       .showSnackBar(const SnackBar(content: Text('Check your inbox')));
+    // }
+    // } on AuthException catch (error) {
+    // if (mounted) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text(error.message),
+    //     backgroundColor: Theme.of(context).colorScheme.error,
+    //   ));
+    // }
+    // } catch (error) {
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //       content: const Text('Error occured'),
+    //       backgroundColor: Theme.of(context).colorScheme.error,
+    //     ));
+    //   }
+    // }
   }
 
   void _toggleSignUp() {
