@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
     _authSupbscription = supabase.auth.onAuthStateChange.listen((event) {
       final User? user = supabase.auth.currentUser;
       if (user != null) {
-        context.go('/account');
+        context.go('/home');
       }
     });
   }

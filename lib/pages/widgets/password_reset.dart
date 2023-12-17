@@ -115,7 +115,7 @@ class _PasswordResetState extends State<PasswordReset> {
                             ),
                           ),
                           onSubmitted: (_) {
-                            _toggleSignUpButton();
+                            _updatePassword();
                           },
                           textInputAction: TextInputAction.go,
                         ),
@@ -162,7 +162,7 @@ class _PasswordResetState extends State<PasswordReset> {
                       ),
                     ),
                   ),
-                  onPressed: () => {_toggleSignUpButton()},
+                  onPressed: () => {_updatePassword()},
                 ),
               )
             ],
@@ -172,7 +172,7 @@ class _PasswordResetState extends State<PasswordReset> {
     );
   }
 
-  void _toggleSignUpButton() async {
+  void _updatePassword() async {
     final password = _passwordController.text.trim();
     final passwordConfirm = _confirmPasswordController.text.trim();
 

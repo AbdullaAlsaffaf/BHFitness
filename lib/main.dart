@@ -1,5 +1,6 @@
-import 'package:bhfit/pages/account_page.dart';
+import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/login_page.dart';
+import 'package:bhfit/pages/news_details.dart';
 import 'package:bhfit/pages/password_reset_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
 import 'package:flutter/material.dart';
@@ -33,12 +34,17 @@ class MainApp extends StatelessWidget {
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/account',
-        builder: (context, state) => const AccountPage(),
+        path: '/home',
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: '/passreset',
         builder: (context, state) => const PassResetPage(),
+      ),
+      GoRoute(
+        path: '/details/:id',
+        builder: (context, state) =>
+            DetailsPage(id: state.pathParameters['id']!),
       ),
     ],
   );

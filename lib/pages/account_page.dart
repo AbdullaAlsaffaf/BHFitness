@@ -8,23 +8,25 @@ class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Center(child: Text('Account'))),
-        body: Column(
-          children: [
-            ElevatedButton(
-                onPressed: () async {
-                  context.go('/');
-                },
-                child: const Text('splashscreen')),
-            ElevatedButton(
-                onPressed: () async {
-                  await supabase.auth.signOut();
-                  if (context.mounted) {
-                    context.go('/login');
-                  }
-                },
-                child: const Text('Sign Out'))
-          ],
-        ));
+      appBar: AppBar(title: const Center(child: Text('Account'))),
+      body: Column(
+        children: [
+          ElevatedButton(
+              onPressed: () async {
+                context.go('/');
+              },
+              child: const Text('splashscreen')),
+          ElevatedButton(
+            onPressed: () async {
+              await supabase.auth.signOut();
+              if (context.mounted) {
+                context.go('/login');
+              }
+            },
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
   }
 }

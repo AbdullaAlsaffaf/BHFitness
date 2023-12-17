@@ -17,13 +17,13 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _redirect() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     final session = supabase.auth.currentSession;
 
     if (!mounted) return;
 
     if (session != null) {
-      context.go('/account');
+      context.go('/home');
     } else {
       context.go('/login');
     }
