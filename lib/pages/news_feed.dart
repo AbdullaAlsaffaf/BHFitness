@@ -14,11 +14,6 @@ class _NewsFeedState extends State<NewsFeed> {
       supabase.from('posts').select('id, title, banner_url').asStream();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -37,10 +32,6 @@ class _NewsFeedState extends State<NewsFeed> {
             }
             final posts = snapshot.data!;
 
-            if (posts[5]['banner_url'] != null) {
-              debugPrint(posts[5]['banner_url']);
-            }
-
             return ListView.builder(
               itemCount: posts.length,
               itemBuilder: (context, index) {
@@ -52,7 +43,8 @@ class _NewsFeedState extends State<NewsFeed> {
                   child: Card(
                     elevation: 2.0,
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
                     margin: const EdgeInsetsDirectional.symmetric(
                         vertical: 10.0, horizontal: 15.0),
                     child: Column(

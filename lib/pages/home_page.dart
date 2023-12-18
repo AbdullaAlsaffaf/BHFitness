@@ -1,5 +1,6 @@
 import 'package:bhfit/pages/account_page.dart';
 import 'package:bhfit/pages/news_feed.dart';
+import 'package:bhfit/pages/plan_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,10 +13,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selected = 0;
   final pages = [
-    NewsFeed(),
-    Placeholder(),
-    Placeholder(),
-    AccountPage(),
+    const NewsFeed(),
+    const PlanPage(),
+    const Placeholder(),
+    const AccountPage(),
   ];
 
   @override
