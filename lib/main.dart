@@ -2,6 +2,7 @@ import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/login_page.dart';
 import 'package:bhfit/pages/news_details.dart';
 import 'package:bhfit/pages/password_reset_page.dart';
+import 'package:bhfit/pages/plan_exercises_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -46,6 +47,13 @@ class MainApp extends StatelessWidget {
         builder: (context, state) =>
             DetailsPage(id: state.pathParameters['id']!),
       ),
+      GoRoute(
+        path: '/plan/exercises/:id/:title',
+        builder: (context, state) => PlanExercisesPage(
+          planid: state.pathParameters['id']!,
+          planName: state.pathParameters['title']!,
+        ),
+      )
     ],
   );
 

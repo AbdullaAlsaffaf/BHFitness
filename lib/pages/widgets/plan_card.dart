@@ -1,5 +1,5 @@
-import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PlanCard extends StatefulWidget {
   const PlanCard({super.key, required this.planid, required this.title});
@@ -14,95 +14,36 @@ class PlanCard extends StatefulWidget {
 class _PlanCardState extends State<PlanCard> {
   @override
   Widget build(BuildContext context) {
-    final exercisesStream = supabase
-        .from('plan_exercises')
-        .select('exercise_id, user_exercises:exercise_id ( name )')
-        .eq('plan_id', widget.planid)
-        .asStream();
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 15.0),
-      elevation: 2.0,
-      clipBehavior: Clip.antiAlias,
-      child: ExpansionTile(
-        collapsedShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        title: Text(widget.title),
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 1.0,
-            color: Colors.grey[400],
-          ),
-          StreamBuilder<dynamic>(
-            stream: exercisesStream,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(
-                    child: CircularProgressIndicator(),
+    return GestureDetector(
+      onTap: () {
+        final id = widget.planid;
+        final title = widget.title;
+        context.push('/plan/exercises/$id/$title');
+      },
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+        elevation: 2.0,
+        clipBehavior: Clip.antiAlias,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  widget.title,
+                  style: const TextStyle(
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
                   ),
-                );
-              }
-
-              final exercises = snapshot.data!;
-
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: exercises.length,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          exercises[index]["user_exercises"]["name"],
-                        ),
-                        Icon(Icons.arrow_right_outlined),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
+                ),
+                const Icon(Icons.arrow_right)
+              ],
+            ),
           ),
-        ],
-        onExpansionChanged: (bool expanded) {
-          setState(() {});
-        },
+        ),
       ),
     );
-    // return Container(
-    //   child: Column(
-    //     children: [
-    //       Container(
-    //         margin: EdgeInsets.symmetric(horizontal: 20.0),
-    //         child: Row(
-    //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //           children: [
-    //             Text(widget.title),
-    //             IconButton(
-    //               onPressed: () {
-    //                 setState(() {
-    //                   _expanded = !_expanded;
-    //                 });
-    //               },
-    //               icon: _expanded
-    //                   ? Icon(Icons.arrow_downward)
-    //                   : Icon(Icons.arrow_right),
-    //               iconSize: 30.0,
-    //             ),
-    //           ],
-    //         ),
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
