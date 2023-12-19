@@ -1,5 +1,6 @@
 import 'package:bhfit/main.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PlanExercisesPage extends StatefulWidget {
   const PlanExercisesPage(
@@ -15,7 +16,7 @@ class PlanExercisesPage extends StatefulWidget {
 class _PlanExercisesPageState extends State<PlanExercisesPage> {
   late final _exercisesStream = supabase
       .from('plan_exercises')
-      .select('id, user_exercises:exercise_id (name, type_id)')
+      .select('exercise_id, user_exercises:exercise_id (name, type_id)')
       .eq('plan_id', widget.planid)
       .asStream();
 
@@ -52,18 +53,33 @@ class _PlanExercisesPageState extends State<PlanExercisesPage> {
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(
-                          vertical: 10.0,
-                          horizontal: 10.0,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            exercises[index]["user_exercises"]["name"] +
-                                " " +
-                                exercises[index]["user_exercises"]["type_id"]
-                                    .toString(),
+                      GestureDetector(
+                        behavior: HitTestBehavior.translucent,
+                        onTap: () {
+                          final String title =
+                              exercises[index]["user_exercises"]["name"];
+                          final String typeid = exercises[index]
+                                  ["user_exercises"]["type_id"]
+                              .toString();
+                          final String exerciseid =
+                              exercises[index]["exercise_id"].toString();
+                          final String planid = widget.planid.toString();
+                          context.push(
+                              '/exercise/details/$exerciseid/$title/$typeid/$planid');
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 10.0,
+                          ),
+                          child: Center(
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 18.0, horizontal: 8.0),
+                              child: Text(
+                                exercises[index]["user_exercises"]["name"],
+                              ),
+                            ),
                           ),
                         ),
                       ),

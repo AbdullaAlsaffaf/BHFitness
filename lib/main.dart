@@ -1,3 +1,4 @@
+import 'package:bhfit/pages/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/login_page.dart';
 import 'package:bhfit/pages/news_details.dart';
@@ -53,7 +54,24 @@ class MainApp extends StatelessWidget {
           planid: state.pathParameters['id']!,
           planName: state.pathParameters['title']!,
         ),
-      )
+      ),
+      GoRoute(
+        path: '/exercise/details/:exerciseid/:title/:typeid/:planid',
+        builder: (context, state) => ExerciseDetails(
+          exerciseid: state.pathParameters['exerciseid']!,
+          exerciseName: state.pathParameters['title']!,
+          typeid: state.pathParameters['typeid']!,
+          planid: state.pathParameters['planid'],
+        ),
+      ),
+      GoRoute(
+        path: '/exercise/details/:exerciseid/:title/:typeid',
+        builder: (context, state) => ExerciseDetails(
+          exerciseid: state.pathParameters['exerciseid']!,
+          exerciseName: state.pathParameters['title']!,
+          typeid: state.pathParameters['typeid']!,
+        ),
+      ),
     ],
   );
 

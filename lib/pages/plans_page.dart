@@ -2,14 +2,14 @@ import 'package:bhfit/main.dart';
 import 'package:bhfit/pages/widgets/plan_card.dart';
 import 'package:flutter/material.dart';
 
-class PlanPage extends StatefulWidget {
-  const PlanPage({super.key});
+class PlansPage extends StatefulWidget {
+  const PlansPage({super.key});
 
   @override
-  State<PlanPage> createState() => _PlanPageState();
+  State<PlansPage> createState() => _PlansPageState();
 }
 
-class _PlanPageState extends State<PlanPage> {
+class _PlansPageState extends State<PlansPage> {
   final _plansStream = supabase.from('plans').select('id, name').asStream();
 
   @override
