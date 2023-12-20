@@ -1,6 +1,6 @@
-import 'package:bhfit/pages/account_page.dart';
-import 'package:bhfit/pages/news_feed.dart';
-import 'package:bhfit/pages/plans_page.dart';
+import 'package:bhfit/pages/account/account_page.dart';
+import 'package:bhfit/pages/news/news_feed.dart';
+import 'package:bhfit/pages/workouts/plans_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

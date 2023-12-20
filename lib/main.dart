@@ -1,10 +1,11 @@
-import 'package:bhfit/pages/exercise_details_page.dart';
+import 'package:bhfit/pages/workouts/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
-import 'package:bhfit/pages/login_page.dart';
-import 'package:bhfit/pages/news_details.dart';
-import 'package:bhfit/pages/password_reset_page.dart';
-import 'package:bhfit/pages/plan_exercises_page.dart';
+import 'package:bhfit/pages/account/login_page.dart';
+import 'package:bhfit/pages/news/news_details.dart';
+import 'package:bhfit/pages/account/password_reset_page.dart';
+import 'package:bhfit/pages/workouts/plan_exercises_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
+import 'package:bhfit/pages/workouts/user_exercises_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,6 +48,10 @@ class MainApp extends StatelessWidget {
         path: '/details/:id',
         builder: (context, state) =>
             DetailsPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/exercises',
+        builder: (context, state) => const ExercisesPage(),
       ),
       GoRoute(
         path: '/plan/exercises/:id/:title',
