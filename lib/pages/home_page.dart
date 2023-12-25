@@ -1,5 +1,6 @@
 import 'package:bhfit/pages/account/account_page.dart';
-import 'package:bhfit/pages/news/news_feed.dart';
+import 'package:bhfit/pages/map/map_page.dart';
+import 'package:bhfit/pages/news/news_feed_page.dart';
 import 'package:bhfit/pages/workouts/plans_page.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   final pages = [
     const NewsFeed(),
     const PlansPage(),
-    const Placeholder(),
+    const MapPage(),
     const AccountPage(),
   ];
 

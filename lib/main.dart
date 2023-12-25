@@ -1,7 +1,7 @@
 import 'package:bhfit/pages/workouts/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/account/login_page.dart';
-import 'package:bhfit/pages/news/news_details.dart';
+import 'package:bhfit/pages/news/news_details_page.dart';
 import 'package:bhfit/pages/account/password_reset_page.dart';
 import 'package:bhfit/pages/workouts/plan_exercises_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
