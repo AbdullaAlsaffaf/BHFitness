@@ -1,3 +1,4 @@
+import 'package:bhfit/pages/news/news_post_page.dart';
 import 'package:bhfit/pages/workouts/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/account/login_page.dart';
@@ -45,9 +46,13 @@ class MainApp extends StatelessWidget {
         builder: (context, state) => const PassResetPage(),
       ),
       GoRoute(
-        path: '/details/:id',
+        path: '/post/details/:id',
         builder: (context, state) =>
             DetailsPage(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/post/new',
+        builder: (context, state) => const PostNews(),
       ),
       GoRoute(
         path: '/exercises',

@@ -29,9 +29,19 @@ class _AccountPageState extends State<AccountPage> {
       _nameController.text = (data['first_name'] ?? '') as String;
       _avatarUrl = (data['avatar_url'] ?? '') as String;
     } on PostgrestException catch (error) {
-      // TODO exception catch
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
     } catch (error) {
-      // TODO exception catch
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Something went wrong'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -63,9 +73,19 @@ class _AccountPageState extends State<AccountPage> {
         );
       }
     } on PostgrestException catch (error) {
-      // TODO exception catch
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
     } catch (error) {
-      // TODO exception catch
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text("Something went wrong"),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
     }
     if (!mounted) {
       return;
