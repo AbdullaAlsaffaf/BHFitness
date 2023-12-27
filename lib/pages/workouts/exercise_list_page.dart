@@ -106,6 +106,7 @@ class _ExerciseListPageState extends State<ExerciseListPage> {
                                             vertical: 18.0, horizontal: 8.0),
                                         child: Text(
                                           exercises[index]["name"],
+                                          textAlign: TextAlign.center,
                                         ),
                                       ),
                                     ),

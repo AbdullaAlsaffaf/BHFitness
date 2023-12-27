@@ -26,14 +26,16 @@ class _ExerciseInfoState extends State<ExerciseInfo> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: _isLoaded ? Text(_exercise['name']) : null,
+        title: _isLoaded
+            ? FittedBox(fit: BoxFit.fitWidth, child: Text(_exercise['name']))
+            : null,
       ),
       body: !_isLoaded
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : Container(
-              margin: const EdgeInsets.all(10.0),
+              margin: const EdgeInsets.symmetric(horizontal: 10.0),
               child: SingleChildScrollView(
                 child: Column(
                   children: [

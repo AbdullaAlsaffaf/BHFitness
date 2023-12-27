@@ -1,6 +1,7 @@
 import 'package:bhfit/main.dart';
 import 'package:bhfit/pages/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -100,7 +101,10 @@ class _MapPageState extends State<MapPage> {
                                 children: [
                                   GestureDetector(
                                     behavior: HitTestBehavior.translucent,
-                                    onTap: () {},
+                                    onTap: () {
+                                      context.push(
+                                          '/machine/exercises/${machines[index]['id']}');
+                                    },
                                     child: Container(
                                       width: double.infinity,
                                       margin: const EdgeInsets.symmetric(

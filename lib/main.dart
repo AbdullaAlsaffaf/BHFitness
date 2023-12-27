@@ -1,4 +1,5 @@
 import 'package:bhfit/pages/feedback/feedback_channel_page.dart';
+import 'package:bhfit/pages/machines/machine_exercise.dart';
 import 'package:bhfit/pages/news/news_post_page.dart';
 import 'package:bhfit/pages/workouts/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
@@ -112,6 +113,13 @@ class MainApp extends StatelessWidget {
         path: '/exercise/info/:exerciseid',
         builder: (context, state) => ExerciseInfo(
           exerciseid: state.pathParameters['exerciseid']!,
+        ),
+      ),
+      GoRoute(
+        // page to view the exercises related to a machine
+        path: '/machine/exercises/:machineid',
+        builder: (context, state) => MachineExercisesPage(
+          machineid: state.pathParameters['machineid']!,
         ),
       ),
     ],
