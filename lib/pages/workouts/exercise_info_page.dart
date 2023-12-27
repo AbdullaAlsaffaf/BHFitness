@@ -144,6 +144,7 @@ class _ExerciseInfoState extends State<ExerciseInfo> {
         'user_id': userId
       });
     } on PostgrestException catch (error) {
+      debugPrint(error.message);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Center(

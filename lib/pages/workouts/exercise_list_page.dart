@@ -1,7 +1,6 @@
 import 'package:bhfit/main.dart';
 import 'package:bhfit/pages/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:go_router/go_router.dart';
 
 class ExerciseListPage extends StatefulWidget {
