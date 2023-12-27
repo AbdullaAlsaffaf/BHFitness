@@ -79,7 +79,7 @@ class _PlansPageState extends State<PlansPage> {
                             key: ValueKey(index),
                             endActionPane: ActionPane(
                               motion: const StretchMotion(),
-                              extentRatio: 1 / 3,
+                              extentRatio: 3 / 5,
                               children: [
                                 SlidableAction(
                                   onPressed: (context) async {
@@ -98,6 +98,16 @@ class _PlansPageState extends State<PlansPage> {
                                   foregroundColor: Colors.white,
                                   icon: Icons.delete,
                                   label: 'delete',
+                                ),
+                                SlidableAction(
+                                  onPressed: (context) async {
+                                    context.push(
+                                        '/plan/feedback/${plans[index]['id']}');
+                                  },
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.chat_bubble_rounded,
+                                  label: 'review',
                                 ),
                               ],
                             ),

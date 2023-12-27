@@ -1,3 +1,4 @@
+import 'package:bhfit/pages/feedback/feedback_channel_page.dart';
 import 'package:bhfit/pages/news/news_post_page.dart';
 import 'package:bhfit/pages/workouts/exercise_details_page.dart';
 import 'package:bhfit/pages/home_page.dart';
@@ -30,35 +31,43 @@ class MainApp extends StatelessWidget {
     initialLocation: '/',
     routes: [
       GoRoute(
+        // splash page
         path: '/',
         builder: (context, state) => const SplashPage(),
       ),
       GoRoute(
+        // login page
         path: '/login',
         builder: (context, state) => const LoginPage(),
       ),
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
-      ),
-      GoRoute(
+        // password reset page
         path: '/passreset',
         builder: (context, state) => const PassResetPage(),
       ),
       GoRoute(
+        // home page
+        path: '/home',
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        // specific post details page
         path: '/post/details/:id',
         builder: (context, state) =>
             DetailsPage(id: state.pathParameters['id']!),
       ),
       GoRoute(
+        // new news feed post creation page
         path: '/post/new',
         builder: (context, state) => const PostNews(),
       ),
       GoRoute(
+        // user exercises page
         path: '/exercises',
         builder: (context, state) => const ExercisesPage(),
       ),
       GoRoute(
+        // page to view a plan's exercises
         path: '/plan/exercises/:id/:title',
         builder: (context, state) => PlanExercisesPage(
           planid: state.pathParameters['id']!,
@@ -66,6 +75,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       GoRoute(
+        // page to view a plan's exercise's details
         path: '/exercise/details/:exerciseid/:title/:typeid/:planid',
         builder: (context, state) => ExerciseDetails(
           exerciseid: state.pathParameters['exerciseid']!,
@@ -75,11 +85,19 @@ class MainApp extends StatelessWidget {
         ),
       ),
       GoRoute(
+        // page to view a saved user exercise's details
         path: '/exercise/details/:exerciseid/:title/:typeid',
         builder: (context, state) => ExerciseDetails(
           exerciseid: state.pathParameters['exerciseid']!,
           exerciseName: state.pathParameters['title']!,
           typeid: state.pathParameters['typeid']!,
+        ),
+      ),
+      GoRoute(
+        // feedback channel page for specific plan
+        path: '/plan/feedback/:planid',
+        builder: (context, state) => FeedbackChannelPage(
+          planid: state.pathParameters['planid']!,
         ),
       ),
     ],
