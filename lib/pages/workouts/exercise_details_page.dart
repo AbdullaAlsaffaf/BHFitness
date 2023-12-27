@@ -26,7 +26,8 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
 
   final _weightControllers = <TextEditingController>[];
   final _repsControllers = <TextEditingController>[];
-  final _distanceControllers = <TextEditingController>[];
+  final _speedControllers = <TextEditingController>[];
+  final _timeControllers = <TextEditingController>[];
 
   late Stream<dynamic> _setsStream;
 
@@ -38,7 +39,10 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
     for (final controller in _repsControllers) {
       controller.dispose();
     }
-    for (final controller in _distanceControllers) {
+    for (final controller in _speedControllers) {
+      controller.dispose();
+    }
+    for (final controller in _timeControllers) {
       controller.dispose();
     }
     super.dispose();
@@ -49,7 +53,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
     if (widget.planid == null) {
       _setsStream = supabase
           .from('sets')
-          .select('id, weight, distance, reps')
+          .select('id, weight, speed, time, reps')
           .eq('exercise_id', widget.exerciseid)
           .filter('plan_id', 'is', 'null')
           .order('id', ascending: true)
@@ -58,7 +62,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
       _withPlan = true;
       _setsStream = supabase
           .from('sets')
-          .select('id, weight, distance, reps')
+          .select('id, weight, speed, time, reps')
           .eq('exercise_id', widget.exerciseid)
           .eq('plan_id', widget.planid)
           .order('id', ascending: true)
@@ -102,7 +106,12 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                         'exercise_id': int.parse(widget.exerciseid),
                         'plan_id': int.parse(widget.planid!)
                       });
-                      debugPrint('reached here');
+
+                      setState(() {});
+                    } else {
+                      await supabase.from('sets').insert(
+                          {'exercise_id': int.parse(widget.exerciseid)});
+
                       setState(() {});
                     }
                   },
@@ -133,11 +142,17 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                   .add(TextEditingController(text: set['reps'].toString()));
             }
 
-            if (set['distance'] == null) {
-              _distanceControllers.add(TextEditingController(text: ""));
+            if (set['speed'] == null) {
+              _speedControllers.add(TextEditingController(text: ""));
             } else {
-              _distanceControllers
-                  .add(TextEditingController(text: set['distance'].toString()));
+              _speedControllers
+                  .add(TextEditingController(text: set['speed'].toString()));
+            }
+            if (set['time'] == null) {
+              _timeControllers.add(TextEditingController(text: ""));
+            } else {
+              _timeControllers
+                  .add(TextEditingController(text: set['time'].toString()));
             }
           }
 
@@ -207,7 +222,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                                                     Expanded(
                                                       child: TextField(
                                                         controller:
-                                                            _distanceControllers[
+                                                            _speedControllers[
                                                                 index],
                                                         textAlign:
                                                             TextAlign.center,
@@ -218,7 +233,57 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                                                             const InputDecoration(
                                                           border:
                                                               OutlineInputBorder(),
-                                                          hintText: 'Distance',
+                                                          hintText: 'Speed',
+                                                          hintStyle: TextStyle(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    201,
+                                                                    201,
+                                                                    201),
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                          ),
+                                                          contentPadding:
+                                                              EdgeInsets.all(
+                                                                  0.0),
+                                                        ),
+                                                        onEditingComplete: () {
+                                                          debugPrint(
+                                                              'editing finished');
+                                                        },
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      margin:
+                                                          const EdgeInsets.only(
+                                                              left: 5.0,
+                                                              right: 7.0),
+                                                      alignment:
+                                                          Alignment.bottomRight,
+                                                      child: const Text(
+                                                        'Km/hr',
+                                                        style: TextStyle(
+                                                            fontStyle: FontStyle
+                                                                .italic,
+                                                            fontSize: 12.0),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: TextField(
+                                                        controller:
+                                                            _timeControllers[
+                                                                index],
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        textAlignVertical:
+                                                            TextAlignVertical
+                                                                .center,
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          border:
+                                                              OutlineInputBorder(),
+                                                          hintText: 'Time',
                                                           hintStyle: TextStyle(
                                                             color:
                                                                 Color.fromARGB(
@@ -246,7 +311,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                                                       alignment:
                                                           Alignment.bottomRight,
                                                       child: const Text(
-                                                        'KM',
+                                                        'mins',
                                                         style: TextStyle(
                                                             fontStyle: FontStyle
                                                                 .italic,
@@ -380,6 +445,11 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                             'plan_id': int.parse(widget.planid!)
                           });
                           setState(() {});
+                        } else {
+                          await supabase.from('sets').insert(
+                              {'exercise_id': int.parse(widget.exerciseid)});
+
+                          setState(() {});
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -397,15 +467,27 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                           for (var i = 0; i < sets.length; i++) {
                             try {
                               await supabase.from('sets').update({
-                                'distance':
-                                    double.parse(_distanceControllers[i].text)
+                                'speed': double.parse(_speedControllers[i].text)
                               }).match({'id': sets[i]['id']});
                             } on FormatException catch (error) {
                               debugPrint(error.message);
-                              if (_distanceControllers[i].text.isEmpty) {
+                              if (_speedControllers[i].text.isEmpty) {
                                 await supabase
                                     .from('sets')
-                                    .update({'distance': null}).match(
+                                    .update({'speed': null}).match(
+                                        {'id': sets[i]['id']});
+                              }
+                            }
+                            try {
+                              await supabase.from('sets').update({
+                                'time': double.parse(_timeControllers[i].text)
+                              }).match({'id': sets[i]['id']});
+                            } on FormatException catch (error) {
+                              debugPrint(error.message);
+                              if (_timeControllers[i].text.isEmpty) {
+                                await supabase
+                                    .from('sets')
+                                    .update({'time': null}).match(
                                         {'id': sets[i]['id']});
                               }
                             }

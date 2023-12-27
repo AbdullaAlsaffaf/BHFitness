@@ -82,7 +82,8 @@ class _PlanExercisesPageState extends State<PlanExercisesPage> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          String? exerciseid = await context.push('/exercises');
+                          String? exerciseid = await context
+                              .push('/exercises', extra: {'toAdd': true});
                           if (exerciseid != null) {
                             await supabase.from('plan_exercises').insert({
                               'plan_id': int.parse(widget.planid),

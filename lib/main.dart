@@ -66,8 +66,17 @@ class MainApp extends StatelessWidget {
       ),
       GoRoute(
         // user exercises page
+        // name: RouteName,
         path: '/exercises',
-        builder: (context, state) => const ExercisesPage(),
+        builder: (context, state) {
+          final toAdd = state.extra as bool?;
+          if (toAdd != null && toAdd == true) {
+            return const ExercisesPage(
+              toAdd: true,
+            );
+          }
+          return const ExercisesPage();
+        },
       ),
       GoRoute(
         // List of unconnected Exercises
