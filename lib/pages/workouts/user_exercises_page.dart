@@ -117,8 +117,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
                   Container(
                     margin: const EdgeInsets.only(top: 20.0),
                     child: ElevatedButton(
-                      onPressed: () {
-                        // TODO "add" logic
+                      onPressed: () async {
+                        await context.push('/exercise/list');
                         setState(() {
                           _exercisesStream = supabase
                               .from('user_exercises')

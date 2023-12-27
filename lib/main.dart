@@ -5,6 +5,8 @@ import 'package:bhfit/pages/home_page.dart';
 import 'package:bhfit/pages/account/login_page.dart';
 import 'package:bhfit/pages/news/news_details_page.dart';
 import 'package:bhfit/pages/account/password_reset_page.dart';
+import 'package:bhfit/pages/workouts/exercise_info_page.dart';
+import 'package:bhfit/pages/workouts/exercise_list_page.dart';
 import 'package:bhfit/pages/workouts/plan_exercises_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
 import 'package:bhfit/pages/workouts/user_exercises_page.dart';
@@ -67,11 +69,23 @@ class MainApp extends StatelessWidget {
         builder: (context, state) => const ExercisesPage(),
       ),
       GoRoute(
+        // List of unconnected Exercises
+        path: '/exercise/list',
+        builder: (context, state) => const ExerciseListPage(),
+      ),
+      GoRoute(
         // page to view a plan's exercises
         path: '/plan/exercises/:id/:title',
         builder: (context, state) => PlanExercisesPage(
           planid: state.pathParameters['id']!,
           planName: state.pathParameters['title']!,
+        ),
+      ),
+      GoRoute(
+        // feedback channel page for specific plan
+        path: '/plan/feedback/:planid',
+        builder: (context, state) => FeedbackChannelPage(
+          planid: state.pathParameters['planid']!,
         ),
       ),
       GoRoute(
@@ -94,10 +108,10 @@ class MainApp extends StatelessWidget {
         ),
       ),
       GoRoute(
-        // feedback channel page for specific plan
-        path: '/plan/feedback/:planid',
-        builder: (context, state) => FeedbackChannelPage(
-          planid: state.pathParameters['planid']!,
+        // page to view the info of an exercise
+        path: '/exercise/info/:exerciseid',
+        builder: (context, state) => ExerciseInfo(
+          exerciseid: state.pathParameters['exerciseid']!,
         ),
       ),
     ],

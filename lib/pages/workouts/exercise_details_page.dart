@@ -28,7 +28,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
   final _repsControllers = <TextEditingController>[];
   final _distanceControllers = <TextEditingController>[];
 
-  late Stream<dynamic> _exercisesStream;
+  late Stream<dynamic> _setsStream;
 
   @override
   void dispose() {
@@ -47,7 +47,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
   @override
   Widget build(BuildContext context) {
     if (widget.planid == null) {
-      _exercisesStream = supabase
+      _setsStream = supabase
           .from('sets')
           .select('id, weight, distance, reps')
           .eq('exercise_id', widget.exerciseid)
@@ -56,7 +56,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
           .asStream();
     } else {
       _withPlan = true;
-      _exercisesStream = supabase
+      _setsStream = supabase
           .from('sets')
           .select('id, weight, distance, reps')
           .eq('exercise_id', widget.exerciseid)
@@ -77,7 +77,7 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
         centerTitle: true,
       ),
       body: StreamBuilder<dynamic>(
-        stream: _exercisesStream,
+        stream: _setsStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

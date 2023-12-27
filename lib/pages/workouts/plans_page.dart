@@ -65,6 +65,37 @@ class _PlansPageState extends State<PlansPage> {
                   );
                 }
 
+                if (snapshot.hasData && snapshot.data.length == 0) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      _nameController.clear();
+                      final name = await openDialog();
+
+                      if (name == null || name.trim().isEmpty) {
+                        debugPrint('it null');
+                        debugPrint(name);
+                        return;
+                      }
+
+                      await supabase.from('plans').insert({
+                        'name': name,
+                        'user_id': supabase.auth.currentUser!.id
+                      });
+                      setState(() {
+                        _plansStream = supabase
+                            .from('plans')
+                            .select('id, name')
+                            .asStream();
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: const CircleBorder(),
+                      padding: const EdgeInsets.all(10.0),
+                    ),
+                    child: const Icon(Icons.add, size: 40),
+                  );
+                }
+
                 final plans = snapshot.data!;
 
                 return SingleChildScrollView(

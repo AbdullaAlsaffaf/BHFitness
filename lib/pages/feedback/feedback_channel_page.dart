@@ -197,8 +197,14 @@ class _FeedbackChannelPageState extends State<FeedbackChannelPage> {
 
     if (_channel == null) {
       debugPrint('here 1');
-      //handle creation
       final trainerId = await openDialog();
+
+      if (trainerId == null) {
+        if (mounted) {
+          context.pop();
+        }
+      }
+
       _channel = await supabase
           .from('feedback_channels')
           .insert({
