@@ -8,6 +8,7 @@ import 'package:bhfit/pages/news/news_details_page.dart';
 import 'package:bhfit/pages/account/password_reset_page.dart';
 import 'package:bhfit/pages/workouts/exercise_info_page.dart';
 import 'package:bhfit/pages/workouts/exercise_list_page.dart';
+import 'package:bhfit/pages/workouts/new_exercise_page.dart';
 import 'package:bhfit/pages/workouts/plan_exercises_page.dart';
 import 'package:bhfit/pages/splash_page.dart';
 import 'package:bhfit/pages/workouts/user_exercises_page.dart';
@@ -66,7 +67,6 @@ class MainApp extends StatelessWidget {
       ),
       GoRoute(
         // user exercises page
-        // name: RouteName,
         path: '/exercises',
         builder: (context, state) {
           final toAdd = state.extra as bool?;
@@ -77,6 +77,11 @@ class MainApp extends StatelessWidget {
           }
           return const ExercisesPage();
         },
+      ),
+      GoRoute(
+        // new user exercise
+        path: '/exercises/new',
+        builder: (context, state) => const NewExercisePage(),
       ),
       GoRoute(
         // List of unconnected Exercises

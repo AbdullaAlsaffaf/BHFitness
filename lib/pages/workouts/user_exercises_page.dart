@@ -112,6 +112,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
                                       if (widget.toAdd) {
                                         context.pop(
                                             exercises[index]['id'].toString());
+                                        return;
                                       }
                                       final exerciseid =
                                           exercises[index]['id'].toString();
@@ -157,25 +158,41 @@ class _ExercisesPageState extends State<ExercisesPage> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: _addFromList,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(10.0),
+            child: widget.toAdd
+                ? const Text('Select an exercise to add')
+                : IntrinsicWidth(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: ElevatedButton(
+                              onPressed: _addFromList,
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(10.0),
+                              ),
+                              child: const Text('Exercise List'),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: ElevatedButton(
+                              onPressed: _addNew,
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.all(10.0),
+                              ),
+                              child: const Text('New Exercise'),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  child: const Text('Exercise List'),
-                ),
-                ElevatedButton(
-                  onPressed: _addFromList,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.all(10.0),
-                  ),
-                  child: const Text('New Exercise'),
-                ),
-              ],
-            ),
           ),
         ],
       ),
@@ -191,7 +208,7 @@ class _ExercisesPageState extends State<ExercisesPage> {
   }
 
   Future<void> _addNew() async {
-    await context.push('/exercise/list');
+    await context.push('/exercises/new');
     setState(() {
       _exercisesStream =
           supabase.from('user_exercises').select('id, name').asStream();

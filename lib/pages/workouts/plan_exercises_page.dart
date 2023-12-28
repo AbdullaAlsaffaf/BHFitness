@@ -81,24 +81,7 @@ class _PlanExercisesPageState extends State<PlanExercisesPage> {
                         ),
                       ),
                       ElevatedButton(
-                        onPressed: () async {
-                          String? exerciseid = await context
-                              .push('/exercises', extra: {'toAdd': true});
-                          if (exerciseid != null) {
-                            await supabase.from('plan_exercises').insert({
-                              'plan_id': int.parse(widget.planid),
-                              'exercise_id': int.parse(exerciseid)
-                            });
-                            setState(() {
-                              _exercisesStream = supabase
-                                  .from('plan_exercises')
-                                  .select(
-                                      'exercise_id, user_exercises:exercise_id (name, type_id)')
-                                  .eq('plan_id', widget.planid)
-                                  .asStream();
-                            });
-                          }
-                        },
+                        onPressed: _addExercise,
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
                           padding: const EdgeInsets.all(10.0),
@@ -198,24 +181,7 @@ class _PlanExercisesPageState extends State<PlanExercisesPage> {
                         Container(
                           margin: const EdgeInsets.only(top: 20.0),
                           child: ElevatedButton(
-                            onPressed: () async {
-                              String? exerciseid =
-                                  await context.push('/exercises');
-                              if (exerciseid != null) {
-                                await supabase.from('plan_exercises').insert({
-                                  'plan_id': int.parse(widget.planid),
-                                  'exercise_id': int.parse(exerciseid)
-                                });
-                                setState(() {
-                                  _exercisesStream = supabase
-                                      .from('plan_exercises')
-                                      .select(
-                                          'exercise_id, user_exercises:exercise_id (name, type_id)')
-                                      .eq('plan_id', widget.planid)
-                                      .asStream();
-                                });
-                              }
-                            },
+                            onPressed: _addExercise,
                             style: ElevatedButton.styleFrom(
                               shape: const CircleBorder(),
                               padding: const EdgeInsets.all(10.0),
@@ -233,5 +199,22 @@ class _PlanExercisesPageState extends State<PlanExercisesPage> {
         ],
       ),
     );
+  }
+
+  Future<void> _addExercise() async {
+    String? exerciseid = await context.push('/exercises', extra: true);
+    if (exerciseid != null) {
+      await supabase.from('plan_exercises').insert({
+        'plan_id': int.parse(widget.planid),
+        'exercise_id': int.parse(exerciseid)
+      });
+      setState(() {
+        _exercisesStream = supabase
+            .from('plan_exercises')
+            .select('id, exercise_id, user_exercises!inner (name, type_id)')
+            .eq('plan_id', widget.planid)
+            .asStream();
+      });
+    }
   }
 }
