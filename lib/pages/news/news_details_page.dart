@@ -56,7 +56,7 @@ class _DetailsPageState extends State<DetailsPage> {
                             left: 8.0, right: 8.0, bottom: 10.0),
                         child: Text(
                           _postData['title'],
-                          textAlign: TextAlign.justify,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,

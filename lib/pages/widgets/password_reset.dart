@@ -47,24 +47,24 @@ class _PasswordResetState extends State<PasswordReset> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          top: 20.0,
+                          bottom: 20.0,
+                          left: 25.0,
+                          right: 25.0,
+                        ),
                         child: TextField(
                           controller: _passwordController,
                           obscureText: _obscureTextPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            // icon: const Icon(
-                            //   FontAwesomeIcons.lock,
-                            //   size: 22.0,
-                            //   color: Colors.black,
-                            // ),
                             hintText: 'New Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: _togglePasswordObscurity,
                               child: Icon(
@@ -90,19 +90,15 @@ class _PasswordResetState extends State<PasswordReset> {
                           controller: _confirmPasswordController,
                           obscureText: _obscureTextConfirmPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            // icon: const Icon(
-                            //   FontAwesomeIcons.lock,
-                            //   size: 22.0,
-                            //   color: Colors.black,
-                            // ),
                             hintText: 'Confirm New Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: _toggleConfirmPasswordObscurity,
                               child: Icon(
@@ -130,8 +126,7 @@ class _PasswordResetState extends State<PasswordReset> {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Color.fromRGBO(
-                          255, 255, 255, 1), //CustomTheme.loginGradientEnd,
+                      color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(-1.0, 2.0),
                       blurRadius: 6.0,
                     ),
@@ -140,8 +135,6 @@ class _PasswordResetState extends State<PasswordReset> {
                       colors: <Color>[
                         Color.fromRGBO(0, 0, 0, 1),
                         Color.fromRGBO(255, 255, 255, 1),
-                        // CustomTheme.loginGradientEnd,
-                        // CustomTheme.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -149,8 +142,6 @@ class _PasswordResetState extends State<PasswordReset> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                  // highlightColor: Colors.transparent,
-                  // splashColor: CustomTheme.loginGradientEnd,
                   child: const Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),

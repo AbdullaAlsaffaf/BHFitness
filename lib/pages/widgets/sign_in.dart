@@ -56,19 +56,15 @@ class _SignInState extends State<SignIn> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            // icon: Icon(
-                            //   FontAwesomeIcons.envelope,
-                            //   color: Colors.black,
-                            //   size: 22.0,
-                            // ),
                             hintText: 'Email Address',
                             hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                           ),
                         ),
                       ),
@@ -84,25 +80,21 @@ class _SignInState extends State<SignIn> {
                           controller: _passwordController,
                           obscureText: _obscureTextPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            // icon: const Icon(
-                            //   FontAwesomeIcons.lock,
-                            //   size: 22.0,
-                            //   color: Colors.black,
-                            // ),
                             hintText: 'Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: _togglePasswordObscurity,
                               child: Icon(
                                 _obscureTextPassword
-                                    ? Icons.home
-                                    : Icons.home_filled,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 size: 15.0,
                                 color: Colors.black,
                               ),
@@ -124,8 +116,7 @@ class _SignInState extends State<SignIn> {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Color.fromRGBO(
-                          255, 255, 255, 1), //CustomTheme.loginGradientEnd,
+                      color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(1.0, 2.0),
                       blurRadius: 6.0,
                     ),
@@ -134,8 +125,6 @@ class _SignInState extends State<SignIn> {
                       colors: <Color>[
                         Color.fromRGBO(255, 255, 255, 1),
                         Color.fromRGBO(0, 0, 0, 1)
-                        // CustomTheme.loginGradientEnd,
-                        // CustomTheme.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -143,8 +132,6 @@ class _SignInState extends State<SignIn> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                    //highlightColor: Colors.transparent,
-                    // splashColor: CustomTheme.loginGradientEnd,
                     child: const Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 42.0),
@@ -167,9 +154,9 @@ class _SignInState extends State<SignIn> {
               child: const Text(
                 'Forgot Password?',
                 style: TextStyle(
-                    // decoration: TextDecoration.underline,
-                    color: Colors.white,
-                    fontSize: 16.0),
+                  color: Colors.white,
+                  fontSize: 16.0,
+                ),
               ),
             ),
           ),

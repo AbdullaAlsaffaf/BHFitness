@@ -51,7 +51,6 @@ class _PostNewsState extends State<PostNews> {
                                   onPressed: _getImage,
                                   child: const Text('Select Image')),
                             )
-                          // const Text('Select Image')
                           : GestureDetector(
                               onTap: _getImage,
                               child: Image.file(

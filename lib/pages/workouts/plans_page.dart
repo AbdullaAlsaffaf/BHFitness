@@ -13,24 +13,33 @@ class PlansPage extends StatefulWidget {
 }
 
 class _PlansPageState extends State<PlansPage> {
+  bool _channelsLoaded = false;
+  dynamic _feedbackChannels;
+
   Stream? _plansStream;
+  final userId = supabase.auth.currentSession!.user.id;
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
-    _plansStream = supabase.from('plans').select('id, name').asStream();
+    _plansStream = supabase
+        .from('plans')
+        .select('id, name')
+        .match({'user_id': userId}).asStream();
     _searchController.addListener(() {
       setState(() {
         String? query = _searchController.text;
         _plansStream = supabase
             .from('plans')
             .select('id, name')
+            .match({'user_id': userId})
             .ilike('name', '%$query%')
             .asStream();
       });
     });
+    _loadChannels();
     super.initState();
   }
 
@@ -72,8 +81,6 @@ class _PlansPageState extends State<PlansPage> {
                       final name = await openDialog();
 
                       if (name == null || name.trim().isEmpty) {
-                        debugPrint('it null');
-                        debugPrint(name);
                         return;
                       }
 
@@ -85,7 +92,7 @@ class _PlansPageState extends State<PlansPage> {
                         _plansStream = supabase
                             .from('plans')
                             .select('id, name')
-                            .asStream();
+                            .match({'user_id': userId}).asStream();
                       });
                     },
                     style: ElevatedButton.styleFrom(
@@ -122,7 +129,8 @@ class _PlansPageState extends State<PlansPage> {
                                       _plansStream = supabase
                                           .from('plans')
                                           .select('id, name')
-                                          .asStream();
+                                          .match(
+                                              {'user_id': userId}).asStream();
                                     });
                                   },
                                   backgroundColor: Colors.red,
@@ -157,8 +165,6 @@ class _PlansPageState extends State<PlansPage> {
                             final name = await openDialog();
 
                             if (name == null || name.trim().isEmpty) {
-                              debugPrint('it null');
-                              debugPrint(name);
                               return;
                             }
 
@@ -170,7 +176,7 @@ class _PlansPageState extends State<PlansPage> {
                               _plansStream = supabase
                                   .from('plans')
                                   .select('id, name')
-                                  .asStream();
+                                  .match({'user_id': userId}).asStream();
                             });
                           },
                           style: ElevatedButton.styleFrom(
@@ -185,6 +191,70 @@ class _PlansPageState extends State<PlansPage> {
                 );
               },
             ),
+          ),
+          Container(
+            child: _channelsLoaded
+                ? const Text(
+                    'Requested feedback',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  )
+                : null,
+          ),
+          Container(
+            child: _channelsLoaded
+                ? Flexible(
+                    child: ListView.builder(
+                        itemCount: _feedbackChannels.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Slidable(
+                            key: ValueKey(index),
+                            endActionPane: ActionPane(
+                              motion: const StretchMotion(),
+                              extentRatio: 3 / 5,
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) async {
+                                    await supabase
+                                        .from('feedback_channels')
+                                        .delete()
+                                        .match({
+                                      'id': _feedbackChannels[index]['id']
+                                    });
+                                    setState(() {
+                                      _channelsLoaded = false;
+                                    });
+                                    _loadChannels();
+                                  },
+                                  backgroundColor: Colors.red,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.close,
+                                  label: 'close',
+                                ),
+                                SlidableAction(
+                                  onPressed: (context) async {
+                                    context.push(
+                                        '/plan/feedback/${_feedbackChannels[index]['plans']['id']}');
+                                  },
+                                  backgroundColor: Colors.green,
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.chat_bubble_rounded,
+                                  label: 'review',
+                                ),
+                              ],
+                            ),
+                            child: PlanCard(
+                              planid: _feedbackChannels[index]['plans']['id']
+                                  .toString(),
+                              title: _feedbackChannels[index]['plans']['name'],
+                            ),
+                          );
+                        }),
+                  )
+                : null,
           ),
         ],
       ),
@@ -218,4 +288,25 @@ class _PlansPageState extends State<PlansPage> {
           ],
         ),
       );
+
+  Future<void> _loadChannels() async {
+    final roleID = await supabase
+        .from('users')
+        .select('role_id')
+        .match({'id': userId}).single();
+
+    if (roleID['role_id'] != 3) {
+      return;
+    }
+
+    _feedbackChannels = await supabase
+        .from('feedback_channels')
+        .select('id, plans:plan_id (id, name)');
+
+    if (_feedbackChannels != null) {
+      setState(() {
+        _channelsLoaded = true;
+      });
+    }
+  }
 }

@@ -124,6 +124,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
                                       posts[index]['title'],
+                                      textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.w500,

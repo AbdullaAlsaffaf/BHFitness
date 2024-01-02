@@ -38,7 +38,6 @@ class _FeedbackChannelPageState extends State<FeedbackChannelPage> {
 
   @override
   void dispose() {
-    // _messageStream.cancel();
     _messageController.dispose();
     super.dispose();
   }
@@ -168,6 +167,7 @@ class _FeedbackChannelPageState extends State<FeedbackChannelPage> {
     _userId = supabase.auth.currentSession!.user.id;
   }
 
+  // Might be needed in the future
   // Future<void> _getPlan() async {
   //   _plan = await supabase
   //       .from('plans')
@@ -176,10 +176,7 @@ class _FeedbackChannelPageState extends State<FeedbackChannelPage> {
   // }
 
   Future<void> _getTrainers() async {
-    debugPrint('here trainers');
     _trainers = await supabase.from('users').select().match({'role_id': 3});
-    debugPrint('here trainers again');
-    debugPrint(_trainers[0]['first_name']);
     setState(() {
       _trainersLoaded = true;
     });
@@ -196,7 +193,6 @@ class _FeedbackChannelPageState extends State<FeedbackChannelPage> {
     }
 
     if (_channel == null) {
-      debugPrint('here 1');
       final trainerId = await openDialog();
 
       if (trainerId == null) {

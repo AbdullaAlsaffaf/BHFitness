@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> _redirect() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 5));
     final session = supabase.auth.currentSession;
 
     if (!mounted) return;

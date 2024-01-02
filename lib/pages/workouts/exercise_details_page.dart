@@ -248,10 +248,6 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                                                               EdgeInsets.all(
                                                                   0.0),
                                                         ),
-                                                        onEditingComplete: () {
-                                                          debugPrint(
-                                                              'editing finished');
-                                                        },
                                                       ),
                                                     ),
                                                     Container(
@@ -298,10 +294,6 @@ class _ExerciseDetailsState extends State<ExerciseDetails> {
                                                               EdgeInsets.all(
                                                                   0.0),
                                                         ),
-                                                        onEditingComplete: () {
-                                                          debugPrint(
-                                                              'editing finished');
-                                                        },
                                                       ),
                                                     ),
                                                     Container(

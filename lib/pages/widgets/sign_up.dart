@@ -54,19 +54,15 @@ class _SignUpState extends State<SignUp> {
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: const InputDecoration(
                             border: InputBorder.none,
-                            // icon: Icon(
-                            //   FontAwesomeIcons.envelope,
-                            //   color: Colors.black,
-                            //   size: 22.0,
-                            // ),
                             hintText: 'Email Address',
                             hintStyle: TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                           ),
                         ),
                       ),
@@ -82,25 +78,21 @@ class _SignUpState extends State<SignUp> {
                           controller: _passwordController,
                           obscureText: _obscureTextPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            // icon: const Icon(
-                            //   FontAwesomeIcons.lock,
-                            //   size: 22.0,
-                            //   color: Colors.black,
-                            // ),
                             hintText: 'Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: _togglePasswordObscurity,
                               child: Icon(
                                 _obscureTextPassword
-                                    ? Icons.home
-                                    : Icons.home_filled,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 size: 15.0,
                                 color: Colors.black,
                               ),
@@ -115,30 +107,30 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 20.0, bottom: 20.0, left: 25.0, right: 25.0),
+                          top: 20.0,
+                          bottom: 20.0,
+                          left: 25.0,
+                          right: 25.0,
+                        ),
                         child: TextField(
                           controller: _confirmPasswordController,
                           obscureText: _obscureTextConfirmPassword,
                           style: const TextStyle(
-                              fontFamily: 'WorkSansSemiBold',
-                              fontSize: 16.0,
-                              color: Colors.black),
+                            fontSize: 16.0,
+                            color: Colors.black,
+                          ),
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            // icon: const Icon(
-                            //   FontAwesomeIcons.lock,
-                            //   size: 22.0,
-                            //   color: Colors.black,
-                            // ),
                             hintText: 'Confirm Password',
                             hintStyle: const TextStyle(
-                                fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
+                              fontSize: 17.0,
+                            ),
                             suffixIcon: GestureDetector(
                               onTap: _toggleConfirmPasswordObscurity,
                               child: Icon(
                                 _obscureTextConfirmPassword
-                                    ? Icons.home
-                                    : Icons.home_filled,
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
                                 size: 15.0,
                                 color: Colors.black,
                               ),
@@ -160,8 +152,7 @@ class _SignUpState extends State<SignUp> {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   boxShadow: <BoxShadow>[
                     BoxShadow(
-                      color: Color.fromRGBO(
-                          255, 255, 255, 1), //CustomTheme.loginGradientEnd,
+                      color: Color.fromRGBO(255, 255, 255, 1),
                       offset: Offset(-1.0, 2.0),
                       blurRadius: 6.0,
                     ),
@@ -170,8 +161,6 @@ class _SignUpState extends State<SignUp> {
                       colors: <Color>[
                         Color.fromRGBO(0, 0, 0, 1),
                         Color.fromRGBO(255, 255, 255, 1),
-                        // CustomTheme.loginGradientEnd,
-                        // CustomTheme.loginGradientStart
                       ],
                       begin: FractionalOffset(0.2, 0.2),
                       end: FractionalOffset(1.0, 1.0),
@@ -179,8 +168,6 @@ class _SignUpState extends State<SignUp> {
                       tileMode: TileMode.clamp),
                 ),
                 child: MaterialButton(
-                  //highlightColor: Colors.transparent,
-                  // splashColor: CustomTheme.loginGradientEnd,
                   child: const Padding(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 42.0),

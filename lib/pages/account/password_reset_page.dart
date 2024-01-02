@@ -36,8 +36,6 @@ class _PassResetPageState extends State<PassResetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton:
-          FloatingActionButton(onPressed: () => {context.go('/login')}),
       body: SingleChildScrollView(
         physics: const ClampingScrollPhysics(),
         child: Container(
@@ -48,8 +46,6 @@ class _PassResetPageState extends State<PassResetPage> {
               colors: <Color>[
                 Color.fromRGBO(255, 255, 255, 1),
                 Color.fromRGBO(0, 0, 0, 1)
-                // CustomTheme.loginGradientStart,
-                // CustomTheme.loginGradientEnd
               ],
               begin: FractionalOffset(0.0, 0.0),
               end: FractionalOffset(1.0, 1.0),
